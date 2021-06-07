@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const SlackBot = require('slackbots');
-// const axios = require('axios');
+const axios = require('axios');
 // const cron = require('node-cron');
 
 dotenv.config();
@@ -10,38 +10,84 @@ const bot = new SlackBot({
     name: 'testing',
 });
 
-bot.on('start', () => {
-    const params = {
-        icon_emoji: ':robot_face:'
-    }
-
-    bot.postMessageToChannel(
-        'random',
-        'Get inspired while working with @inspirenuggets',
-        params
-    );
-})
-
 bot.on('error', (err) => {
     console.log(err);
 });
 
-// function createJob() {
-//     const task = cron.schedule(
-//         '31 16 * * 1-5',
-//         () => {
-//             bot.postMessageToChannel('random', 'go eat lunch Alivia!');
-//         },
-//         {
-//             scheduled: true,
-//             timezone: 'America/New_York',
-//         }
-//     );
+let today = new Date().getHours();
 
-//     task.start();
-// }
+bot.on('start', () => {
+	if(today > 12){
+		return badJoke();
+	} else {
+		return birdImage();
+	}   
+});
 
-// bot.on('start', function () {
-//     bot.postMessageToUser('aliviarochester@gmail.com', 'testing app starting...');
-//     createJob();
-// });
+// Message Handler
+bot.on('message', (data) => {
+    if(data.type !== 'message') {
+        return;
+    }
+    handleMessage(data.text);
+})
+
+// Response Handler
+function handleMessage(message) {
+    if(message.includes(' brenton')) {
+        badJoke();
+    } else if(message.includes(' gary')) {
+        birdImage();
+    } else if(message.includes(' help')) {
+        runHelp();
+	}
+}
+
+// create bird images - for Gary
+function birdImage() {
+    axios.get('https://some-random-api.ml/img/birb')
+      .then(res => {
+            const bird = res.data.link;
+            const params = {
+                icon_url: `${bird}`,
+				as_user: false,
+            }  
+            bot.postMessageToChannel(
+                'random',
+                `<- Hey *@livi*, does this bird look yummy? K, bye :heart: U!`,
+                params
+            );
+      })
+}
+
+// create bad jokes - for Brenton
+function badJoke() {
+    axios.get('https://geek-jokes.sameerkumar.website/api')
+      .then(res => {
+            const joke = res.data;
+
+            const params = {
+                icon_emoji: ':roll-eyes-brenton2:'
+            }
+        
+            bot.postMessageToChannel(
+                'random',
+                `*@livi* ${joke}...k, bye, :heart: u!`,
+                params
+            );
+
+      })
+}
+
+// create help
+function runHelp() {
+    const params = {
+        icon_emoji: ':question:'
+    }
+
+    bot.postMessageToChannel(
+        'random',
+        `Type *@brenton-bot* with *gary* to get a tasty bird image, *brenton* to get a bad joke/dad joke and *help* to get this instruction again. There just aren't enough notifications!...k, bye :heart: U!`,
+        params
+    );
+}
