@@ -17,11 +17,11 @@ bot.on('error', (err) => {
 let today = new Date().getHours();
 
 bot.on('start', () => {
-	// if(today > 12){
-	// 	return badJoke();
-	// } else {
+	if(today > 12){
 		return badJoke();
-	
+	} else {
+		return birdImage();
+	}
 });
 
 // Message Handler
