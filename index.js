@@ -86,7 +86,7 @@ function runHelp() {
     }
 
     bot.postMessageToChannel(
-        'random',
+        '_random',
         `Type *@brenton-bot* with *gary* to get a tasty bird image, *brenton* to get a bad joke/dad joke and *help* to get this instruction again. There just aren't enough notifications!...k, bye :heart: U!`,
         params
     );
