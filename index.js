@@ -7,7 +7,7 @@ dotenv.config();
 
 const bot = new SlackBot({
     token: `${process.env.BOT_TOKEN}`,
-    name: 'testing',
+    name: 'breton-bot',
 });
 
 bot.on('error', (err) => {
@@ -17,11 +17,11 @@ bot.on('error', (err) => {
 let today = new Date().getHours();
 
 bot.on('start', () => {
-	if(today > 12){
+	// if(today > 12){
+	// 	return badJoke();
+	// } else {
 		return badJoke();
-	} else {
-		return birdImage();
-	}   
+	
 });
 
 // Message Handler
@@ -53,8 +53,8 @@ function birdImage() {
 				as_user: false,
             }  
             bot.postMessageToChannel(
-                'random',
-                `<- Hey *@livi*, does this bird look yummy? K, bye :heart: U!`,
+                '_random',
+                `<- Hey *@Gary Kovar*, does this bird look tasty? K, bye :heart: U!`,
                 params
             );
       })
@@ -67,12 +67,12 @@ function badJoke() {
             const joke = res.data;
 
             const params = {
-                icon_emoji: ':roll-eyes-brenton2:'
+                icon_emoji: ':roll-eyes-brenton:'
             }
         
             bot.postMessageToChannel(
-                'random',
-                `*@livi* ${joke}...k, bye, :heart: u!`,
+                '_random',
+                `*@Brenton* ${joke}...k, bye, :heart: u!`,
                 params
             );
 
