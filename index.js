@@ -54,7 +54,7 @@ function birdImage() {
             }  
             bot.postMessageToChannel(
                 '_random',
-                `<- Hey *@Gary Kovar*, does this bird look tasty? K, bye :heart: U!`,
+                `<- Hey *@Sunshine*, does this bird look tasty? K, bye :heart: U!`,
                 params
             );
       })
